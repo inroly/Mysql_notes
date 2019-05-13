@@ -64,9 +64,9 @@ SQL 中最重要的 DDL 语句:
 - DROP INDEX - 删除索引
 
 
- **inportant tips**
+ **important tips**
  
- - 关键字函数名全部大写
+ - 关键字函数名全部大写（这个只是约定成俗方便自己审计的东西，不按照也无所谓）
  - 数据库名称、表名称、字段名称全部小写
  - SQl语句必须以分号结尾
  
@@ -151,6 +151,8 @@ test>CREATE TABLE testtable(
     -> );
 ```
 NOT NULL表示非空，空会报错，usigned为无符号，负值报错。
+
+*example*
 ```
 test>CREATE TABLE testtable(
     -> id SMALLINT UNSIGNED AUTO_INCREMENT,
@@ -159,9 +161,11 @@ test>CREATE TABLE testtable(
     -> );
 ```
 AUTO_INCREMENT 为自动编号，默认情况下起始值为1，每次增量为1
-*example*
+
+
 
 --
+###create
 ```
 CREATE TABLE testtable(
 	-> id SMALLINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -173,6 +177,9 @@ CREATE TABLE testtable(
 每张数据表只能存在一个主键
 主键保证记录的唯一性
 主键自动为NOT NULL
+
+--
+###show
 ```
 SHOW TABLES [FROM db_name] [LINK 'pattern' |WHERE expr];
 ```
@@ -184,14 +191,64 @@ SHOW COLUMNS FROM tbl_name;
 展示数据表中的列信息
 
 --
-
+###insert
 ```
 INSERT [INTO] tbl_name[(col_name,...)] VALUES(val,...);
 ```
-INSERT testtable(username,age) VALUES('Matthew',25);
-
 *example*
+```
+INSERT testtable(username,age) VALUES('Matthew',25);
+```
 
 
+--
+###delete
 
- 
+```
+DELETE FROM TABLE_NAME [WHERE OPTION];
+```
+option不指定的话是删除表的所有内容
+和drop不同的是delete是删除表内的内容，而drop是删除数据库
+
+--
+###update
+```
+UPDATE table_name SET field1=new-value1, field2=new-value2 [WHERE option]
+```
+可更新多个字段，可指定条件
+--
+###selete
+```
+SELECT column_name,column_name
+FROM table_name
+[WHERE OPTION]
+[NATURE  JOIN other_table]
+[GROUP BY CLOMN_NAME HAVING OPTION] 
+[LIMIT N][ OFFSET M]
+```
+查询语句中你可以使用一个或者多个表，表之间使用逗号(,)分割，并使用WHERE语句来设定查询条件。
+
+SELECT 命令可以读取一条或者多条记录。
+
+可以使用星号（*）来代替其他字段，SELECT语句会返回表的所有字段数据
+
+可以使用 WHERE 语句来包含任何条件。
+
+可以用nature join或者其他链接函数进行表的链接
+
+可以使用group by进行分组
+
+可以使用 LIMIT 属性来设定返回的记录数。
+
+你可以通过OFFSET指定SELECT语句开始查询的数据偏移量。默认情况下偏移量为0。
+
+也可以使用嵌套查询例子：select * from (selete from table)t;
+
+---
+##键
+
+区别|主键|外键
+---|---|----
+定义|唯一标识一条记录，不能有重复的，不允许为空 |表的外键是另一表的主键, 外键可以有重复的, 可以是空值 
+作用|用来保证数据完整性|用来和其他表建立联系用的
+个数|主键只能有一个|一个表可以有多个外键
